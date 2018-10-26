@@ -104,7 +104,7 @@ public class LinkStrand implements IDnaStrand {
 		myIndex = count;
 		myLocalIndex = dex;
 		myCurrent = list;
-		return list.info.charAt(dex);
+		return list.info.charAt(dex-1);
 	}
 	
 	@Override
