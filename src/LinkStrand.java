@@ -90,7 +90,7 @@ public class LinkStrand implements IDnaStrand {
 			list = myFirst;
 		}
 		while (count != index) {
-			if (list.next != null && index-count > list.next.info.length() || dex == list.info.length()) {
+			if (list.next != null && (index-count > list.next.info.length() || dex == list.info.length())) {
 				dex = 0;
 				count += list.info.length()- dex + list.next.info.length();
 				list = list.next.next;
