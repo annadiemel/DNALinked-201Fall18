@@ -1,9 +1,146 @@
-Your Name here
-Your NetID here
-Your Partner's name here (or erase)
-Your Partner's NetID here (or erase)
+Anna Diemel
+ad356
 
-Questions here will come from the assignment
-writeup. Be sure to copy paste questions and 
-your explanations before you push to GitHub and
-do that before uploading to Gradescope
+1. Are the benchmark timings for StringStrand consistent with the
+explanation below that the time to execute cutAndSplice is O(b^2 S)? 
+
+If the benchmark timings were to be consistent with this logic, then two
+things should be true: the runtime should have a linear relationship to S,
+the length of splicee, and should be larger than the StringBuilderStrand
+runtime for the same splicee S by a factor of b. The Benchmark data for
+StringStrand was as follows:
+-----
+Class	                splicee	      recomb	time	appends
+-----
+StringStrand:	            256	      4,800,471	0.557	1290
+StringStrand:	            512	      4,965,591	0.525	1290
+StringStrand:	          1,024	      5,295,831	0.550	1290
+StringStrand:	          2,048	      5,956,311	0.631	1290
+StringStrand:	          4,096	      7,277,271	0.829	1290
+StringStrand:	          8,192	      9,919,191	1.260	1290
+StringStrand:	         16,384	     15,203,031	1.934	1290
+StringStrand:	         32,768	     25,770,711	3.483	1290
+StringStrand:	         65,536	     46,906,071	6.385	1290
+StringStrand:	        131,072	     89,176,791	12.206	1290
+StringStrand:	        262,144	    173,718,231	24.422	1290
+StringStrand:	        524,288	    342,801,111	47.525	1290
+StringStrand:	      1,048,576	    680,966,871	91.588	1290
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+	at StringStrand.append(StringStrand.java:70)
+	at IDnaStrand.cutAndSplice(IDnaStrand.java:37)
+	at DNABenchmark.lambda$0(DNABenchmark.java:76)
+	at DNABenchmark$$Lambda$141/1321530272.run(Unknown Source)
+	at java.base/java.lang.Thread.run(Unknown Source)
+	at DNABenchmark.strandSpliceBenchmark(DNABenchmark.java:79)
+	at DNABenchmark.main(DNABenchmark.java:113)
+
+Examining the 256 and 512 splicee values, the runtime does not follow
+the suggested complexity. However, when evaluating the larger values, such
+as the doubling from 524,288 to 1,048,576, one observes a clear linear 
+relationship with the time, which in this case nearly doubles from 47.525
+to 91.588 s. This supports consistency with the O(b^2 S) runtime. The lack
+of consistency in the small splicee values can be explained; since the S values
+are small, the majority of the runtime complexity doesn't come from S variation.
+At very small S values, the effect on the overall runtime is negligible.
+The large values support the O(b^2 S) complexity theory and are consistent
+with it. The b^2 value will be further explored in question two.
+
+2. Are the benchmark timings for StringBuilderStrand consistent with the
+explanation below that the time to execute cutAndSplice is O(bS)? 
+
+Like the StringStrand benchmark timings, the StringBuilderStrand times
+should have a linear relationship with S that doubles or near doubles 
+between the 524,288 ad 1,048,576 values. The StringBuilderStrand data
+is as follows:
+-----
+Class	                splicee	      recomb	time	appends
+-----
+StringBuilderStrand:	            256	      4,800,471	0.027	1290
+StringBuilderStrand:	            512	      4,965,591	0.018	1290
+StringBuilderStrand:	          1,024	      5,295,831	0.008	1290
+StringBuilderStrand:	          2,048	      5,956,311	0.008	1290
+StringBuilderStrand:	          4,096	      7,277,271	0.009	1290
+StringBuilderStrand:	          8,192	      9,919,191	0.010	1290
+StringBuilderStrand:	         16,384	     15,203,031	0.015	1290
+StringBuilderStrand:	         32,768	     25,770,711	0.025	1290
+StringBuilderStrand:	         65,536	     46,906,071	0.033	1290
+StringBuilderStrand:	        131,072	     89,176,791	0.091	1290
+StringBuilderStrand:	        262,144	    173,718,231	0.144	1290
+StringBuilderStrand:	        524,288	    342,801,111	0.317	1290
+StringBuilderStrand:	      1,048,576	    680,966,871	0.540	1290
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+	at java.base/java.util.Arrays.copyOf(Unknown Source)
+	at java.base/java.lang.AbstractStringBuilder.ensureCapacityInternal(Unknown Source)
+	at java.base/java.lang.AbstractStringBuilder.append(Unknown Source)
+	at java.base/java.lang.StringBuilder.append(Unknown Source)
+	at StringBuilderStrand.append(StringBuilderStrand.java:70)
+	at IDnaStrand.cutAndSplice(IDnaStrand.java:41)
+	at DNABenchmark.strandSpliceBenchmark(DNABenchmark.java:67)
+	at DNABenchmark.main(DNABenchmark.java:113)
+
+This data does support the linear relationship between O and S as expected,
+which is most clearly observed in the relationship between the 262,144, 
+524,288, and 1,048,576 values: though not as clearly linked as in the
+longer runtimes of StringStrand, the jumps from 0.144 to 0.317 to 0.540
+show a near linear relationship between the two variables. Furthermore, the 
+runtime for any given splicee value is significantly smaller than those
+of StringStrand from a factor of 20 for S = 256 to roughly 170 for 
+S = 1,048,576. Although this is not constant as expected, it is also not nearly
+representative of a linear relationship with S. I believe that this
+accurately reflects a b^2 and b difference withing the runtime, supporting
+both the notion that StringStrand is O(b^2 S) complexity and that 
+StringBuilderStrand is O(bS) runtime.
+
+3. Explain why the time for LinkStrand does not change much at all over all
+the runs in the benchmark program. Explain why you think memory is 
+exhausted at the specific strand size you see in your timings -- as 
+compared to exhaustion for String and StringBuilder.
+
+The data for LinkStrand is as follows:
+-----
+Class	                splicee	      recomb	time	appends
+-----
+LinkStrand:	            256	      4,796,630	0.036	1290
+LinkStrand:	            512	      4,961,750	0.022	1290
+LinkStrand:	          1,024	      5,291,990	0.011	1290
+LinkStrand:	          2,048	      5,952,470	0.012	1290
+LinkStrand:	          4,096	      7,273,430	0.008	1290
+LinkStrand:	          8,192	      9,915,350	0.008	1290
+LinkStrand:	         16,384	     15,199,190	0.008	1290
+LinkStrand:	         32,768	     25,766,870	0.008	1290
+LinkStrand:	         65,536	     46,902,230	0.008	1290
+LinkStrand:	        131,072	     89,172,950	0.009	1290
+LinkStrand:	        262,144	    173,714,390	0.010	1290
+LinkStrand:	        524,288	    342,797,270	0.008	1290
+LinkStrand:	      1,048,576	    680,963,030	0.009	1290
+LinkStrand:	      2,097,152	  1,357,294,550	0.008	1290
+LinkStrand:	      4,194,304	  2,709,957,590	0.008	1290
+LinkStrand:	      8,388,608	  5,415,283,670	0.009	1290
+LinkStrand:	     16,777,216	 10,825,935,830	0.008	1290
+LinkStrand:	     33,554,432	 21,647,240,150	0.009	1290
+LinkStrand:	     67,108,864	 43,289,848,790	0.008	1290
+LinkStrand:	    134,217,728	 86,575,066,070	0.007	1290
+LinkStrand:	    268,435,456	173,145,500,630	0.011	1290
+LinkStrand:	    536,870,912	346,286,369,750	0.008	1290
+LinkStrand:	  1,073,741,824	692,568,107,990	0.012	1290
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+	at java.base/java.util.Arrays.copyOf(Unknown Source)
+	at java.base/java.lang.AbstractStringBuilder.ensureCapacityInternal(Unknown Source)
+	at java.base/java.lang.AbstractStringBuilder.append(Unknown Source)
+	at java.base/java.lang.StringBuilder.append(Unknown Source)
+	at DNABenchmark.main(DNABenchmark.java:110)
+	
+Which demonstrates the relative lack of runtime change with respect to S.
+One can also see how much larger splicee is allowed to be when using a 
+LinkStrand object in the Benchmark test. It's notable that, when the 
+OutOfMemoryError occurs, there is no error issue within the LinkStrand code.
+This is not the case for StringStrand or StringBuilderStrand. LinkStrand
+runs out of memory far after either of the aforementioned because of the
+difference in its append method. Whereas LinkStrand's append method
+simply changes what the myLast node points to, StringStrand and 
+StringBuilderStrand both require string concatenation- per our discussion
+this week, we know that that is quite costly in memory since each string 
+object is nonmutable and requires its own storage space. So, changing
+the pointer of the final Node as done in LinkStrand costs much less storage
+and therefore can run for much longer in terms of space and splicee/recomb
+values.
