@@ -90,15 +90,16 @@ public class LinkStrand implements IDnaStrand {
 			list = myFirst;
 		}
 		while (count != index) {
-			if (list != null && (index-count > list.info.length() || dex == list.info.length()-1)) {
-				dex = 0;
-				count += list.info.length()- dex;
+			if (index-count > list.info.length() || dex == list.info.length()-1) {
+				dex=0;
+				count+= list.info.length()-dex;
 				list = list.next;
 				if (list == null) throw new IndexOutOfBoundsException();
 			}
 			else {
 				count++;
 				dex++;
+				if (count==index) break;
 			}
 		}
 		myIndex = count;
