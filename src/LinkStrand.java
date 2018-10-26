@@ -90,13 +90,13 @@ public class LinkStrand implements IDnaStrand {
 			list = myFirst;
 		}
 		while (count != index) {
-			if (index-count >= list.info.length()) {
+			if (index-count > list.next.info.length()) {
 				dex = 0;
-				count += list.info.length();
-				list = list.next;
+				count += list.info.length()-dex + list.next.info.length();
+				list = list.next.next;
 				if (list == null) throw new IndexOutOfBoundsException();
 			}
-			if (index - count < list.info.length()) {
+			if (index - count <= list.info.length()) {
 				count++;
 				dex++;
 			}
@@ -104,7 +104,7 @@ public class LinkStrand implements IDnaStrand {
 		myIndex = count;
 		myLocalIndex = dex;
 		myCurrent = list;
-		return list.info.charAt(dex-1);
+		return list.info.charAt(dex);
 	}
 	
 	@Override
