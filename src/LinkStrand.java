@@ -110,8 +110,8 @@ public class LinkStrand implements IDnaStrand {
 	@Override
 	public String toString() {
 		Node curr = myFirst;
-		StringBuilder ret = new StringBuilder(myFirst.info);
-		//ret.append(myFirst.info);
+		StringBuilder ret = new StringBuilder();
+		ret.append(myFirst.info);
 		while (curr != myLast) {
 			curr = curr.next;
 			ret.append(curr.info);
