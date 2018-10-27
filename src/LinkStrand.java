@@ -112,11 +112,10 @@ public class LinkStrand implements IDnaStrand {
 		Node curr = myFirst;
 		StringBuilder ret = new StringBuilder();
 		ret.append(myFirst.info);
-		while (curr.next != null) {
+		while (curr.next!=null) {
 			curr = curr.next;
 			ret.append(curr.info);
 		}
-		ret.append(myLast.info);
 		return ret.toString();
 	}
 }
