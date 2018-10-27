@@ -28,6 +28,8 @@ public class LinkStrand implements IDnaStrand {
 		return mySize;
 	}
 
+	
+	// creating the intialize method in order to complete the two LinkStrand constructors
 	@Override
 	public void initialize(String source) {
 		myFirst = new Node(source);
@@ -43,6 +45,7 @@ public class LinkStrand implements IDnaStrand {
 		return new LinkStrand(source);
 	}
 
+	//adding the length of a given string to mySize and adding its respective Node to the LinkedList
 	@Override
 	public IDnaStrand append(String dna) {
 		myAppends+=1;
@@ -63,6 +66,7 @@ public class LinkStrand implements IDnaStrand {
 		LinkStrand copy = new LinkStrand(first.toString());
 		LinkStrand temp;
 		Node curr = this.myFirst;
+		//looping through the amount of appends in order to reverse the info of each node
 		for (int i = 0; i<myAppends; i++) {
 			curr = curr.next;
 			StringBuilder tempInfo = new StringBuilder(curr.info);
@@ -92,7 +96,7 @@ public class LinkStrand implements IDnaStrand {
 		}
 		
 		if (index>=mySize || index<0) throw new IndexOutOfBoundsException();
-		
+		// while loop to get to the index for count
 		while (count != index) {
 				count++;
 				dex++;
@@ -113,6 +117,7 @@ public class LinkStrand implements IDnaStrand {
 		StringBuilder ret = new StringBuilder();
 		ret.append(myFirst.info);
 		while (curr.next!=null) {
+			//appending the intermediate node information to the StringBuilder object
 			curr = curr.next;
 			ret.append(curr.info);
 		}
